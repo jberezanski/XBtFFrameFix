@@ -94,6 +94,12 @@
       </AdditionalDependencies>
       <EntryPointSymbol>Startup</EntryPointSymbol>
     </Link>
+    <PostBuildEvent>
+      <Command>$(ProjectDir)..\Installers\build.cmd</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Create installer</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="memset.c">
