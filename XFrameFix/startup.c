@@ -244,10 +244,21 @@ BOOL CreateSingleInstanceMutex()
 	return CreateMutexW(NULL, TRUE, L"XFrameFix single instance") && GetLastError() != ERROR_ALREADY_EXISTS;
 }
 
+BOOL FindExistingWindow(HWND* lpHwnd)
+{
+	*lpHwnd = FindWindowW(L"X", L"X");
+	return !!(*lpHwnd);
+}
+
 int RunContinously()
 {
+	HWND hwnd;
+
 	if (!g_SingleProcess && !CreateSingleInstanceMutex())
 		return 1;
+
+	if (FindExistingWindow(&hwnd))
+		RemoveWindowFrame(hwnd);
 
 	if (!CreateObjectCreateWinEventHook(0))
 		return 1;
