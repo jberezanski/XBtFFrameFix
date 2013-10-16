@@ -10,9 +10,10 @@ RequestExecutionLevel user
 
 Name "${PRODUCT_DISPLAY_NAME}"
 
-InstallDir $LOCALAPPDATA\${PRODUCT_NAME}
+InstallDir $LOCALAPPDATA\Programs\${PRODUCT_NAME}
 
 Page instfiles
+UninstPage instfiles
 
 ShowInstDetails show
 ShowUninstDetails show
@@ -24,16 +25,14 @@ Section Binaries
 SectionEnd
 
 Section Autostart
-	SetShellVarContext current
-	SetOutPath $INSTDIR
 	CreateShortCut "$SMSTARTUP\XBtF frame fix.lnk" $INSTDIR\${APP_EXE}
 SectionEnd
 
 Section UninstallInformation
-	WriteRegStr HKCU Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME} DisplayName "${PRODUCT_DISPLAY_NAME}"
-	WriteRegStr HKCU Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME} UninstallString "$INSTDIR\Uninstall.exe"
-	WriteRegStr HKCU Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME} InstallLocation "$INSTDIR"
-	WriteRegStr HKCU Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME} Publisher "Jakub Bere¿añski"
+	WriteRegStr SHCTX Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME} DisplayName "${PRODUCT_DISPLAY_NAME}"
+	WriteRegStr SHCTX Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME} UninstallString "$INSTDIR\Uninstall.exe"
+	WriteRegStr SHCTX Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME} InstallLocation "$INSTDIR"
+	WriteRegStr SHCTX Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME} Publisher "Jakub Berezanski"
 	WriteUninstaller $INSTDIR\Uninstall.exe
 SectionEnd
 
@@ -43,7 +42,11 @@ Section Uninstall
 	Processes::KillProcess ${APP_EXE}
 	Delete $INSTDIR\Uninstall.exe
 	Delete $INSTDIR\${APP_EXE}
-	Delete "$SMSTARTUP\XBtF frame fix.lnk"
 	RMDir $INSTDIR
-	DeleteRegKey HKCU Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}
+	DeleteRegKey SHCTX Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}
+	SetAutoClose true
+SectionEnd
+
+Section un.Autostart
+	Delete "$SMSTARTUP\XBtF frame fix.lnk"
 SectionEnd
