@@ -25,6 +25,9 @@ Section Binaries
 SectionEnd
 
 Section SetAsDebugger
+	SetRegView 64
+	WriteRegStr HKLM "Software\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\X.exe" Debugger "$INSTDIR\${APP_EXE}"
+	SetRegView 32
 	WriteRegStr HKLM "Software\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\X.exe" Debugger "$INSTDIR\${APP_EXE}"
 SectionEnd
 
@@ -48,5 +51,8 @@ Section Uninstall
 SectionEnd
 
 Section un.SetAsDebugger
+	SetRegView 64
+	DeleteRegKey HKLM "Software\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\X.exe"
+	SetRegView 32
 	DeleteRegKey HKLM "Software\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\X.exe"
 SectionEnd
